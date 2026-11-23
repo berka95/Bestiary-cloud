@@ -18,6 +18,10 @@ on:
         type: choice
         options: [produce, plan, recorded]
         default: produce
+      voice_bundle:
+        description: "Data VO sementara dari ChatGPT untuk mode recorded."
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -51,6 +55,7 @@ jobs:
           TOPIC: ${{ inputs.topic }}
           EPISODE: ${{ inputs.episode }}
           MODE: ${{ inputs.mode }}
+          VOICE_BUNDLE: ${{ inputs.voice_bundle }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
           BESTIARY_RESEARCH_MODEL: ${{ vars.BESTIARY_RESEARCH_MODEL }}
@@ -65,6 +70,52 @@ jobs:
                 exit 1
               fi
               bundle="recordings/$EPISODE"
+              if [[ -n "$VOICE_BUNDLE" ]]; then
+                bundle="$RUNNER_TEMP/bestiary-voice"
+                export VOICE_DIR="$bundle"
+                python - <<'PYBRIDGE'
+          import json
+          import math
+          import os
+          import urllib.request
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  return None
+
+          bundle = Path(os.environ["VOICE_DIR"])
+          submission = json.loads(os.environ["VOICE_BUNDLE"])
+          episode = submission["episode"]
+          if episode["episode"] != os.environ["EPISODE"]:
+              raise SystemExit("Nomor episode dalam data VO berbeda.")
+          bundle.mkdir(mode=0o700)
+          (bundle/"episode.json").write_text(json.dumps(episode, ensure_ascii=False))
+          opener = urllib.request.build_opener(NoRedirect)
+          for lang in ("en", "id"):
+              voice = submission[lang]
+              url = urlsplit(voice["url"])
+              if (url.scheme != "https" or url.netloc not in {"resource2.heygen.ai", "files.heygen.ai"}
+                  or not url.path.startswith("/text_to_speech/")):
+                  raise SystemExit("URL audio HeyGen tidak dikenali.")
+              cues = voice["cues"]
+              if len(cues) != len(episode[lang]["lines"]):
+                  raise SystemExit("Jumlah cue VO tidak sesuai.")
+              prior = 0
+              for start, end in cues:
+                  if not (math.isfinite(start) and math.isfinite(end) and prior <= start < end <= 25):
+                      raise SystemExit("Timing VO tidak valid.")
+                  prior = end
+              (bundle/f"{lang}.json").write_text(json.dumps(cues))
+              with opener.open(voice["url"], timeout=45) as response, (bundle/f"{lang}.wav").open("wb") as wav:
+                  limit = 8 * 1024 * 1024
+                  audio = response.read(limit+1)
+                  if len(audio) > limit or audio[:4] != b"RIFF" or audio[8:12] != b"WAVE":
+                      raise SystemExit("Ukuran atau format audio HeyGen tidak sesuai.")
+                  wav.write(audio)
+          PYBRIDGE
+              fi
               args+=(--plan "$bundle/episode.json" --recorded "$bundle")
               ;;
           esac
