@@ -103,7 +103,7 @@ jobs:
           RENDER_STATUS: ${{ needs.produce.result }}
         run: |
           set -euo pipefail
-          if [[ "$(gh repo view --json visibility --jq .visibility)" != "PRIVATE" ]]; then
+          if [[ "$(gh repo view "$GH_REPO" --json visibility --jq .visibility)" != "PRIVATE" ]]; then
             echo "Unduhan langsung hanya diterbitkan pada repo private."
             exit 1
           fi
@@ -124,6 +124,6 @@ jobs:
             echo "Hasil belum tersedia."
             exit 1
           fi
-          url="$(gh release create "$tag" "${assets[@]}" --target "$GITHUB_SHA" \
+          url="$(gh release create --repo "$GH_REPO" "$tag" "${assets[@]}" --target "$GITHUB_SHA" \
             --title "BESTIARY #${GITHUB_RUN_NUMBER} · $TOPIC" --notes "$notes" --latest=false)"
           printf '### Unduh langsung dari HP\n\n[Buka file hasil](%s)\n' "$url" >> "$GITHUB_STEP_SUMMARY"
