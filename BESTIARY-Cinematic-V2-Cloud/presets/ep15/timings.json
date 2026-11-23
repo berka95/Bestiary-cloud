@@ -1,0 +1,472 @@
+{
+  "en": {
+    "duration": 16.070362811791384,
+    "original_words": [
+      {
+        "text": "That",
+        "start_time": 0.299,
+        "end_time": 0.512
+      },
+      {
+        "text": "bug",
+        "start_time": 0.555,
+        "end_time": 0.768
+      },
+      {
+        "text": "just",
+        "start_time": 0.853,
+        "end_time": 0.9387
+      },
+      {
+        "text": "walked",
+        "start_time": 1.024,
+        "end_time": 1.28
+      },
+      {
+        "text": "into",
+        "start_time": 1.365,
+        "end_time": 1.4507
+      },
+      {
+        "text": "a",
+        "start_time": 1.579,
+        "end_time": 1.621
+      },
+      {
+        "text": "trap",
+        "start_time": 1.664,
+        "end_time": 1.877
+      },
+      {
+        "text": "Meet",
+        "start_time": 2.261,
+        "end_time": 2.432
+      },
+      {
+        "text": "the",
+        "start_time": 2.517,
+        "end_time": 2.6027
+      },
+      {
+        "text": "velvet",
+        "start_time": 2.645,
+        "end_time": 2.901
+      },
+      {
+        "text": "worm",
+        "start_time": 2.944,
+        "end_time": 3.157
+      },
+      {
+        "text": "a",
+        "start_time": 3.456,
+        "end_time": 3.4987
+      },
+      {
+        "text": "hunter",
+        "start_time": 3.541,
+        "end_time": 3.797
+      },
+      {
+        "text": "hiding",
+        "start_time": 3.925,
+        "end_time": 4.096
+      },
+      {
+        "text": "in",
+        "start_time": 4.224,
+        "end_time": 4.309
+      },
+      {
+        "text": "damp",
+        "start_time": 4.352,
+        "end_time": 4.565
+      },
+      {
+        "text": "leaf",
+        "start_time": 4.651,
+        "end_time": 4.821
+      },
+      {
+        "text": "litter",
+        "start_time": 4.864,
+        "end_time": 5.035
+      },
+      {
+        "text": "It",
+        "start_time": 5.675,
+        "end_time": 5.76
+      },
+      {
+        "text": "creeps",
+        "start_time": 5.803,
+        "end_time": 6.016
+      },
+      {
+        "text": "forward",
+        "start_time": 6.144,
+        "end_time": 6.3147
+      },
+      {
+        "text": "on",
+        "start_time": 6.485,
+        "end_time": 6.5707
+      },
+      {
+        "text": "soft",
+        "start_time": 6.613,
+        "end_time": 6.955
+      },
+      {
+        "text": "stubby",
+        "start_time": 7.253,
+        "end_time": 7.552
+      },
+      {
+        "text": "legs",
+        "start_time": 7.637,
+        "end_time": 7.808
+      },
+      {
+        "text": "Then",
+        "start_time": 8.324,
+        "end_time": 8.494
+      },
+      {
+        "text": "it",
+        "start_time": 8.537,
+        "end_time": 8.5796
+      },
+      {
+        "text": "fires",
+        "start_time": 8.665,
+        "end_time": 8.921
+      },
+      {
+        "text": "two",
+        "start_time": 9.049,
+        "end_time": 9.262
+      },
+      {
+        "text": "jets",
+        "start_time": 9.348,
+        "end_time": 9.6036
+      },
+      {
+        "text": "of",
+        "start_time": 9.646,
+        "end_time": 9.7316
+      },
+      {
+        "text": "sticky",
+        "start_time": 9.817,
+        "end_time": 10.03
+      },
+      {
+        "text": "slime",
+        "start_time": 10.158,
+        "end_time": 10.414
+      },
+      {
+        "text": "The",
+        "start_time": 10.926,
+        "end_time": 11.054
+      },
+      {
+        "text": "insect",
+        "start_time": 11.097,
+        "end_time": 11.3956
+      },
+      {
+        "text": "struggles",
+        "start_time": 11.481,
+        "end_time": 11.822
+      },
+      {
+        "text": "but",
+        "start_time": 12.206,
+        "end_time": 12.334
+      },
+      {
+        "text": "the",
+        "start_time": 12.377,
+        "end_time": 12.4196
+      },
+      {
+        "text": "strands",
+        "start_time": 12.462,
+        "end_time": 12.8036
+      },
+      {
+        "text": "hold",
+        "start_time": 12.889,
+        "end_time": 13.017
+      },
+      {
+        "text": "it",
+        "start_time": 13.06,
+        "end_time": 13.145
+      },
+      {
+        "text": "in",
+        "start_time": 13.188,
+        "end_time": 13.273
+      },
+      {
+        "text": "place",
+        "start_time": 13.316,
+        "end_time": 13.486
+      },
+      {
+        "text": "What",
+        "start_time": 14.169,
+        "end_time": 14.297
+      },
+      {
+        "text": "creature",
+        "start_time": 14.382,
+        "end_time": 14.681
+      },
+      {
+        "text": "should",
+        "start_time": 14.724,
+        "end_time": 14.8516
+      },
+      {
+        "text": "we",
+        "start_time": 14.894,
+        "end_time": 14.9796
+      },
+      {
+        "text": "track",
+        "start_time": 15.022,
+        "end_time": 15.193
+      },
+      {
+        "text": "next",
+        "start_time": 15.278,
+        "end_time": 15.449
+      }
+    ]
+  },
+  "id": {
+    "duration": 17.47517006802721,
+    "original_words": [
+      {
+        "text": "Serangga",
+        "start_time": 0.256,
+        "end_time": 0.64
+      },
+      {
+        "text": "ini",
+        "start_time": 0.683,
+        "end_time": 0.8107
+      },
+      {
+        "text": "baru",
+        "start_time": 0.853,
+        "end_time": 1.024
+      },
+      {
+        "text": "saja",
+        "start_time": 1.067,
+        "end_time": 1.237
+      },
+      {
+        "text": "masuk",
+        "start_time": 1.28,
+        "end_time": 1.493
+      },
+      {
+        "text": "perangkap",
+        "start_time": 1.536,
+        "end_time": 1.92
+      },
+      {
+        "text": "Kenalin",
+        "start_time": 2.347,
+        "end_time": 2.731
+      },
+      {
+        "text": "velvet",
+        "start_time": 3.029,
+        "end_time": 3.413
+      },
+      {
+        "text": "worm",
+        "start_time": 3.456,
+        "end_time": 3.712
+      },
+      {
+        "text": "pemburu",
+        "start_time": 4.011,
+        "end_time": 4.48
+      },
+      {
+        "text": "yang",
+        "start_time": 4.523,
+        "end_time": 4.608
+      },
+      {
+        "text": "bersembunyi",
+        "start_time": 4.651,
+        "end_time": 5.248
+      },
+      {
+        "text": "di",
+        "start_time": 5.291,
+        "end_time": 5.333
+      },
+      {
+        "text": "serasah",
+        "start_time": 5.376,
+        "end_time": 5.6747
+      },
+      {
+        "text": "lembap",
+        "start_time": 5.717,
+        "end_time": 6.016
+      },
+      {
+        "text": "Dia",
+        "start_time": 6.443,
+        "end_time": 6.613
+      },
+      {
+        "text": "merayap",
+        "start_time": 6.699,
+        "end_time": 6.997
+      },
+      {
+        "text": "pelan",
+        "start_time": 7.04,
+        "end_time": 7.296
+      },
+      {
+        "text": "dengan",
+        "start_time": 7.381,
+        "end_time": 7.5947
+      },
+      {
+        "text": "kaki",
+        "start_time": 7.68,
+        "end_time": 7.893
+      },
+      {
+        "text": "kaki",
+        "start_time": 7.936,
+        "end_time": 8.149
+      },
+      {
+        "text": "pendek",
+        "start_time": 8.192,
+        "end_time": 8.533
+      },
+      {
+        "text": "Lalu",
+        "start_time": 8.832,
+        "end_time": 9.1307
+      },
+      {
+        "text": "dia",
+        "start_time": 9.173,
+        "end_time": 9.301
+      },
+      {
+        "text": "menembakkan",
+        "start_time": 9.344,
+        "end_time": 9.813
+      },
+      {
+        "text": "dua",
+        "start_time": 9.899,
+        "end_time": 10.112
+      },
+      {
+        "text": "semburan",
+        "start_time": 10.155,
+        "end_time": 10.539
+      },
+      {
+        "text": "lendir",
+        "start_time": 10.581,
+        "end_time": 10.837
+      },
+      {
+        "text": "lengket",
+        "start_time": 10.923,
+        "end_time": 11.221
+      },
+      {
+        "text": "Si",
+        "start_time": 11.555,
+        "end_time": 11.7256
+      },
+      {
+        "text": "serangga",
+        "start_time": 11.768,
+        "end_time": 12.067
+      },
+      {
+        "text": "meronta",
+        "start_time": 12.11,
+        "end_time": 12.494
+      },
+      {
+        "text": "tapi",
+        "start_time": 12.835,
+        "end_time": 13.091
+      },
+      {
+        "text": "benang",
+        "start_time": 13.134,
+        "end_time": 13.347
+      },
+      {
+        "text": "lendirnya",
+        "start_time": 13.39,
+        "end_time": 13.816
+      },
+      {
+        "text": "bikin",
+        "start_time": 13.859,
+        "end_time": 14.072
+      },
+      {
+        "text": "dia",
+        "start_time": 14.115,
+        "end_time": 14.2856
+      },
+      {
+        "text": "terjebak",
+        "start_time": 14.328,
+        "end_time": 14.755
+      },
+      {
+        "text": "Berikutnya",
+        "start_time": 15.352,
+        "end_time": 15.822
+      },
+      {
+        "text": "kita",
+        "start_time": 16.078,
+        "end_time": 16.334
+      },
+      {
+        "text": "intip",
+        "start_time": 16.376,
+        "end_time": 16.547
+      },
+      {
+        "text": "hewan",
+        "start_time": 16.59,
+        "end_time": 16.803
+      },
+      {
+        "text": "apa",
+        "start_time": 16.846,
+        "end_time": 17.059
+      }
+    ]
+  }
+}

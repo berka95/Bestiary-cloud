@@ -1,0 +1,86 @@
+{
+  "episode": "EP15",
+  "name": "Velvet Worm",
+  "taxon": "Onychophora",
+  "habitat": "forest",
+  "rig": {
+    "kind": "worm",
+    "color": "#c56a42",
+    "light": "#f8ab64",
+    "legs": 13,
+    "bulk": 11
+  },
+  "action": "slime",
+  "target": true,
+  "sources": [
+    {
+      "url": "https://australian.museum/learn/animals/worms/velvet-worm/",
+      "supports": "Damp shelters, anatomy and paired slime tubes for capturing prey."
+    },
+    {
+      "url": "https://www.taxonomyaustralia.org.au/onychophorans",
+      "supports": "Sticky secretions immobilize small prey."
+    }
+  ],
+  "beats": [
+    "Insect scuttles into a damp macro forest set.",
+    "Track in as worm leaves cover; cycle lobopods and antennae.",
+    "Windup, twin jets, camera kick and wet impact.",
+    "Insect struggles inside sticky threads.",
+    "End card over continuing motion."
+  ],
+  "en": {
+    "title": "This Velvet Worm Shoots Glue! | BESTIARY EP15",
+    "caption": "A tiny hunter with a sticky trick. What creature should we track next? #Shorts #VelvetWorm #Bestiary16Bit",
+    "tags": [
+      "velvet worm",
+      "onychophora",
+      "animal facts",
+      "pixel art",
+      "shorts"
+    ],
+    "lines": [
+      "That bug just walked into a trap.",
+      "Meet the velvet worm,",
+      "a hunter hiding in damp leaf litter.",
+      "It creeps forward on soft, stubby legs.",
+      "Then it fires two jets of sticky slime.",
+      "The insect struggles,",
+      "but the strands hold it in place.",
+      "What creature should we track next?"
+    ],
+    "marks": [
+      1,
+      4,
+      5,
+      7
+    ]
+  },
+  "id": {
+    "title": "Velvet Worm Menembak Lendir Lengket! | BESTIARY EP15",
+    "caption": "Pemburu mungil ini bisa menjebak serangga dengan lendir. Hewan apa yang harus kita intip berikutnya? #VelvetWorm #FaktaHewan #Bestiary16Bit",
+    "tags": [
+      "velvet worm",
+      "cacing beludru",
+      "fakta hewan",
+      "pixel art",
+      "reels"
+    ],
+    "lines": [
+      "Serangga ini baru saja masuk perangkap.",
+      "Kenalin, velvet worm,",
+      "pemburu yang bersembunyi di serasah lembap.",
+      "Dia merayap pelan dengan kaki-kaki pendek.",
+      "Lalu dia menembakkan dua semburan lendir lengket.",
+      "Si serangga meronta,",
+      "tapi benang lendirnya bikin dia terjebak.",
+      "Berikutnya, kita intip hewan apa?"
+    ],
+    "marks": [
+      1,
+      4,
+      5,
+      7
+    ]
+  }
+}
