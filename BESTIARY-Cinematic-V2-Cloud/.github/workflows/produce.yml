@@ -1,0 +1,129 @@
+name: BESTIARY Produce
+run-name: BESTIARY • ${{ inputs.topic }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Nama hewan. EP15 untuk demo tanpa API key."
+        required: true
+        default: "EP15"
+        type: string
+      episode:
+        description: "Opsional. Contoh EP16."
+        required: false
+        type: string
+      mode:
+        description: "Render penuh, naskah saja, atau render dengan rekaman."
+        type: choice
+        options: [produce, plan, recorded]
+        default: produce
+
+permissions:
+  contents: read
+
+jobs:
+  produce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: BESTIARY-Cinematic-V2-Cloud
+    outputs:
+      artifact-id: ${{ steps.transfer.outputs.artifact-id }}
+    env:
+      BESTIARY_OUTPUT: ${{ github.workspace }}/renders
+      TZ: Asia/Jakarta
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Siapkan renderer
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-liberation
+          python -m pip install -r requirements.txt
+      - name: Produksi episode
+        env:
+          TOPIC: ${{ inputs.topic }}
+          EPISODE: ${{ inputs.episode }}
+          MODE: ${{ inputs.mode }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
+          BESTIARY_RESEARCH_MODEL: ${{ vars.BESTIARY_RESEARCH_MODEL }}
+        run: |
+          args=()
+          if [[ -n "$EPISODE" ]]; then args+=(--episode "$EPISODE"); fi
+          case "$MODE" in
+            plan) args+=(--plan-only) ;;
+            recorded)
+              if [[ ! "$EPISODE" =~ ^EP[0-9]{2,4}$ ]]; then
+                echo "Mode recorded perlu nomor episode, misalnya EP16."
+                exit 1
+              fi
+              bundle="recordings/$EPISODE"
+              args+=(--plan "$bundle/episode.json" --recorded "$bundle")
+              ;;
+          esac
+          python produce.py "${args[@]}" -- "$TOPIC"
+      - name: Siapkan paket untuk HP
+        if: ${{ always() }}
+        run: python package_results.py
+      - name: Siapkan file untuk job pengiriman
+        id: transfer
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: BESTIARY-transfer-${{ github.run_attempt }}
+          path: BESTIARY-Cinematic-V2-Cloud/mobile-download/
+          if-no-files-found: ignore
+          retention-days: 1
+          compression-level: 0
+
+  deliver:
+    needs: produce
+    if: ${{ always() && needs.produce.outputs.artifact-id != '' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          artifact-ids: ${{ needs.produce.outputs.artifact-id }}
+          path: release-files
+      - name: Buat unduhan per file
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TOPIC: ${{ inputs.topic }}
+          RENDER_STATUS: ${{ needs.produce.result }}
+        run: |
+          set -euo pipefail
+          if [[ "$(gh repo view --json visibility --jq .visibility)" != "PRIVATE" ]]; then
+            echo "Unduhan langsung hanya diterbitkan pada repo private."
+            exit 1
+          fi
+          tag="bestiary-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}"
+          notes="Unduh tiap file dari bagian Assets. Status produksi: $RENDER_STATUS."
+          assets=()
+          while IFS= read -r -d '' file; do
+            relative="${file#release-files/}"
+            path="${relative#*/}"
+            case "$path" in
+              */*.mp4) name="${path##*/}" ;;
+              *) name="${path//\//_}" ;;
+            esac
+            cp "$file" "./$name"
+            assets+=("./$name")
+          done < <(find release-files -type f -print0)
+          if (( ${#assets[@]} == 0 )); then
+            echo "Hasil belum tersedia."
+            exit 1
+          fi
+          url="$(gh release create "$tag" "${assets[@]}" --target "$GITHUB_SHA" \
+            --title "BESTIARY #${GITHUB_RUN_NUMBER} · $TOPIC" --notes "$notes" --latest=false)"
+          printf '### Unduh langsung dari HP\n\n[Buka file hasil](%s)\n' "$url" >> "$GITHUB_STEP_SUMMARY"
