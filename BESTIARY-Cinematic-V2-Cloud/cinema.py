@@ -248,7 +248,6 @@ class Stage:
         if cover or t>=endcard:
             for i,line in enumerate(self.wrap(d,self.spec["name"].upper(),self.title,222)):
                 d.text((22,123+i*25),line,font=self.title,fill="#ffe0a4",stroke_width=2,stroke_fill="#122017")
-            d.text((23,186), "CINEMATIC V2", font=self.label, fill=accent)
         return im.convert("RGB")
 
     @staticmethod
