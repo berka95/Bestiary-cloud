@@ -55,7 +55,6 @@ jobs:
           TOPIC: ${{ inputs.topic }}
           EPISODE: ${{ inputs.episode }}
           MODE: ${{ inputs.mode }}
-          VOICE_BUNDLE: ${{ inputs.voice_bundle }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
           BESTIARY_RESEARCH_MODEL: ${{ vars.BESTIARY_RESEARCH_MODEL }}
@@ -70,7 +69,7 @@ jobs:
                 exit 1
               fi
               bundle="recordings/$EPISODE"
-              if [[ -n "$VOICE_BUNDLE" ]]; then
+              if python -c 'import json, os, sys; sys.exit(not json.load(open(os.environ["GITHUB_EVENT_PATH"])).get("inputs", {}).get("voice_bundle"))'; then
                 bundle="$RUNNER_TEMP/bestiary-voice"
                 export VOICE_DIR="$bundle"
                 python - <<'PYBRIDGE'
@@ -86,7 +85,8 @@ jobs:
                   return None
 
           bundle = Path(os.environ["VOICE_DIR"])
-          submission = json.loads(os.environ["VOICE_BUNDLE"])
+          event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+          submission = json.loads(event["inputs"]["voice_bundle"])
           episode = submission["episode"]
           if episode["episode"] != os.environ["EPISODE"]:
               raise SystemExit("Nomor episode dalam data VO berbeda.")
@@ -154,10 +154,6 @@ jobs:
           RENDER_STATUS: ${{ needs.produce.result }}
         run: |
           set -euo pipefail
-          if [[ "$(gh repo view "$GH_REPO" --json visibility --jq .visibility)" != "PRIVATE" ]]; then
-            echo "Unduhan langsung hanya diterbitkan pada repo private."
-            exit 1
-          fi
           tag="bestiary-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}"
           notes="Unduh tiap file dari bagian Assets. Status produksi: $RENDER_STATUS."
           assets=()
