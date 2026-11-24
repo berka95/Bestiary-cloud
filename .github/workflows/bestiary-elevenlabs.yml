@@ -32,8 +32,8 @@ jobs:
              ! test -r /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf || \
              { ! test -r /usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf && \
                ! test -r /usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf; }; then
-            sudo apt-get update -q -o Acquire::http::Timeout=15 -o Acquire::Retries=1
-            sudo apt-get install -y ffmpeg fonts-dejavu-core fonts-liberation
+            sudo timeout 100s apt-get update -q -o Acquire::http::Timeout=12 -o Acquire::Retries=1
+            sudo timeout 100s apt-get install -y --no-install-recommends -o Acquire::http::Timeout=12 -o Acquire::Retries=1 ffmpeg fonts-dejavu-core fonts-liberation
           fi
           python -m pip install -r requirements.txt
       - name: Run workflow
