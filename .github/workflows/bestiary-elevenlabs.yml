@@ -32,6 +32,8 @@ jobs:
              ! test -r /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf || \
              { ! test -r /usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf && \
                ! test -r /usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf; }; then
+            # Use one official Ubuntu mirror instead of the runner's rotating EC2 list.
+            printf '%s\n' 'https://azure.archive.ubuntu.com/ubuntu' | sudo tee /etc/apt/apt-mirrors.txt >/dev/null
             sudo timeout 100s apt-get update -q -o Acquire::http::Timeout=12 -o Acquire::Retries=1
             sudo timeout 100s apt-get install -y --no-install-recommends -o Acquire::http::Timeout=12 -o Acquire::Retries=1 ffmpeg fonts-dejavu-core fonts-liberation
           fi
