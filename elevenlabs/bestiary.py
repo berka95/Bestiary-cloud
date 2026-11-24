@@ -175,7 +175,11 @@ def main():
     result = speech(cache, payload, voice_id)
     mp3, wav = cache/"voice.mp3", cache/"voice.wav"
     mp3.write_bytes(base64.b64decode(result["audio_base64"], validate=True))
-    tempo = float(probe(mp3)["format"]["duration"]) / (runtime - .65)
+    raw_duration = float(probe(mp3)["format"]["duration"])
+    # Keep short reads natural. Resize the episode before slowing speech past 0.82x.
+    if raw_duration / (runtime - .65) < .82:
+        runtime = max(20, math.ceil((raw_duration / .88 + .65) * FPS) / FPS)
+    tempo = max(.80, raw_duration / (runtime - .65))
     if not .75 <= tempo <= 1.30:
         raise ValueError("Narration requires excessive retiming. Cached audio preserved.")
     run("ffmpeg","-v","error","-y","-i",str(mp3),"-af",f"atempo={tempo:.8f}",
