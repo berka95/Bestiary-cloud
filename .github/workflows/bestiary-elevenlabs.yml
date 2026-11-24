@@ -25,6 +25,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install cloud render dependencies
+        if: inputs.generate
         working-directory: elevenlabs
         run: |
           sudo apt-get update -q
