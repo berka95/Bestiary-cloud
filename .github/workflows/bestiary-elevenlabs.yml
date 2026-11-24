@@ -1,0 +1,55 @@
+name: BESTIARY ElevenLabs
+on:
+  workflow_dispatch:
+    inputs:
+      episode:
+        description: Episode, e.g. EP17
+        required: true
+        type: string
+      generate:
+        description: Use included ElevenLabs credits and render MP4
+        default: false
+        type: boolean
+permissions:
+  contents: read
+concurrency:
+  group: bestiary-elevenlabs
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install cloud render dependencies
+        working-directory: elevenlabs
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y ffmpeg fonts-dejavu-core fonts-liberation
+          python -m pip install -r requirements.txt
+      - name: Run workflow
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
+          EPISODE: ${{ inputs.episode }}
+          GENERATE: ${{ inputs.generate }}
+        working-directory: elevenlabs
+        run: |
+          if [[ "$GENERATE" != true ]]; then
+            python bestiary.py "$EPISODE" --check
+          elif [[ "$GITHUB_RUN_ATTEMPT" != 1 ]]; then
+            echo 'Inspect ElevenLabs History before starting a new production dispatch.'
+            exit 1
+          else
+            python bestiary.py "$EPISODE"
+          fi
+      - name: Attach verified MP4 and publishing package
+        if: inputs.generate
+        uses: actions/upload-artifact@v4
+        with:
+          name: BESTIARY-${{ inputs.episode }}
+          path: elevenlabs/output/${{ inputs.episode }}/
+          if-no-files-found: error
