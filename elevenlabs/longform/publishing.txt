@@ -13,7 +13,7 @@ SUMBER ILMIAH
 - NOAA JetStream — Layers of the Ocean: https://noaa.gov/jetstream/ocean/layers-of-ocean
 - MBARI — Barreleye fish: https://www.mbari.org/animal/barreleye-fish/
 - Hoving et al. (2013), Vampire squid detritivores in the oxygen minimum zone: https://doi.org/10.1098/rsbl.2012.0914
-- Jamieson et al. (2023), New maximum depth record for bony fish (8,336 m): https://doi.org/10.1016/j.dsr.2023.103936
+- Jamieson et al. (2023), New maximum depth record for bony fish (8,336 m): https://doi.org/10.1016/j.dsr.2023.104132
 - NOAA Ocean Exploration — What is the deepest-living fish?: https://oceanexplorer.noaa.gov/ocean-fact/what-is-the-deepest-living-fish/
 
 TAGS YOUTUBE
