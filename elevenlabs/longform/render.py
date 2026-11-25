@@ -15,6 +15,11 @@ PARTICLES = [(random.randrange(W), random.randrange(H), random.choice((1, 1, 2))
 DEPTHS = {"descent":"000 M", "twilight":"250 M", "barreleye":"700 M",
           "light":"1,100 M", "anglerfish":"1,600 M", "vampire_squid":"2,500 M",
           "siphonophore":"3,300 M", "hadal":"8,000 M"}
+BACKGROUND = Image.new("RGB", (W,H))
+_BG = ImageDraw.Draw(BACKGROUND)
+for _yy in range(H):
+    _k = _yy / H
+    _BG.line((0,_yy,W,_yy), fill=(int(4+4*_k),int(12+15*_k),int(35+36*_k)))
 
 
 def wrap(draw, text, font, max_width):
@@ -52,13 +57,7 @@ def fish(draw, x, y, scale, color, phase, dome=False):
 
 
 def draw_frame(t, chapter, active_caption):
-    img = Image.new("RGB", (W,H))
-    pix = img.load()
-    for yy in range(H):
-        k = yy / H
-        c = (int(4+4*k), int(12+15*k), int(35+36*k))
-        for xx in range(W):
-            pix[xx,yy] = c
+    img = BACKGROUND.copy()
     d = ImageDraw.Draw(img)
     scene = chapter["scene"]
     # layered water particles provide continuous parallax motion
