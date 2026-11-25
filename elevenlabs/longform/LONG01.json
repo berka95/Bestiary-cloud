@@ -1,0 +1,59 @@
+{
+  "title": "Apa yang Sebenarnya Hidup di Laut Terdalam?",
+  "language": "id",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "chapters": [
+    {
+      "id": "descent",
+      "depth_m": 0,
+      "scene": "submersible",
+      "text": "Apa yang sebenarnya hidup di laut terdalam? Bayangkan kita meninggalkan permukaan. Cahaya matahari makin jauh, warna biru perlahan hilang, lalu dunia di sekitar kita menjadi hitam. Tapi gelap bukan berarti kosong. Di bawah sana ada ikan berkepala transparan, cumi-cumi yang mengumpulkan serpihan makanan, dan hewan yang membuat cahayanya sendiri. Kita akan turun bersama kapal selam kecil, mengikuti perubahan laut dari zona remang sampai palung terdalam. Angka kedalaman di layar terus bergerak. Setiap kilometer membawa aturan baru: makanan makin jarang, tekanan makin besar, dan cahaya alami akhirnya lenyap. Ini bukan kisah monster laut. Ini perjalanan melihat bagaimana kehidupan menemukan cara untuk bertahan di tempat yang hampir tak pernah kita lihat."
+    },
+    {
+      "id": "twilight",
+      "depth_m": 250,
+      "scene": "migration",
+      "text": "Di lapisan atas, sinar matahari masih mencapai air, tetapi makin dalam cahayanya melemah. Sekitar dua ratus meter, kita memasuki zona remang. Cahaya di sini terlalu redup untuk menopang fotosintesis. Banyak hewan mendapat energi dari makanan yang turun dari atas: plankton, serpihan organik, atau mangsa yang lewat. Saat malam, sejumlah ikan dan zooplankton bergerak naik untuk mencari makan, lalu turun kembali menjelang pagi. Migrasi harian ini memindahkan energi melalui kolom air dan menghubungkan laut dalam dengan permukaan. Dari atas, zona ini mungkin tampak kosong. Namun kamera sensitif menangkap bayangan kecil, kilatan sisik, dan gerakan yang muncul sebentar lalu menghilang. Di sini, menyamar bisa sama pentingnya dengan berenang cepat."
+    },
+    {
+      "id": "barreleye",
+      "depth_m": 700,
+      "scene": "barreleye",
+      "text": "Perhatikan ikan kecil yang seolah memakai helm kaca. Namanya barreleye, Macropinna microstoma. Di balik kubah transparan pada kepalanya terdapat sepasang mata berbentuk tabung. Mata itu biasanya mengarah ke atas, mencari siluet mangsa. Para peneliti lama bertanya: bagaimana ikan ini makan kalau matanya melihat ke atas sementara mulutnya menghadap ke depan? Rekaman kendaraan bawah air mengungkap jawabannya. Mata barreleye dapat berputar di dalam kubah bening, dari arah atas menuju ke depan saat ikan menyambar makanan. Bagian bening itu bukan kaca keras, melainkan jaringan transparan berisi cairan. Dua titik gelap di depan wajahnya bukan mata, tetapi organ penciuman. Bentuknya tampak seperti rancangan fiksi ilmiah, namun tiap bagiannya membantu ikan ini mencari makan di air remang."
+    },
+    {
+      "id": "light",
+      "depth_m": 1100,
+      "scene": "bioluminescence",
+      "text": "Lewat sekitar seribu meter, cahaya matahari tidak lagi menerangi laut. Namun kegelapan sesekali berkedip. Banyak organisme laut dalam menghasilkan cahaya melalui reaksi kimia, kemampuan yang disebut bioluminesensi. Cahaya itu bukan hiasan. Pada spesies berbeda, sinyal dapat membantu menarik mangsa, mengelabui predator, atau berkomunikasi. Ada hewan yang membuat titik terang di perutnya agar siluet tubuhnya tersamarkan dari bawah. Ada pula yang memakai kilatan untuk mengejutkan pemangsa, lalu menghilang. Dari kapal selam, titik kecil itu terlihat seperti bintang yang bergerak di luar jendela. Tetapi di laut dalam, cahaya bisa berarti ada sesuatu yang sedang berburu—atau sesuatu sedang berusaha agar tidak dimakan."
+    },
+    {
+      "id": "anglerfish",
+      "depth_m": 1600,
+      "scene": "anglerfish",
+      "text": "Di depan kita muncul satu titik cahaya yang bergerak pelan. Itu bisa menjadi umpan. Pada beberapa ikan sungut ganda laut dalam, bagian sirip berubah menjadi semacam pancing dengan organ bercahaya di ujungnya. Mangsa yang mendekat mungkin tidak sempat melihat mulut besar yang menunggu di belakang cahaya itu. Namun jangan bayangkan semua anglerfish sama. Nama ini mencakup banyak spesies dengan ukuran, kedalaman, dan cara hidup berbeda. Bentuk tubuh dan mulutnya membantu mengambil kesempatan saat makanan langka lewat. Di laut yang luas dan gelap, mengejar mangsa bisa menghabiskan banyak energi. Menunggu dengan umpan yang menarik justru dapat menjadi strategi lebih hemat. Cahaya kecil itu bukan tanda laut dalam ramah. Itu bagian dari permainan bertahan hidup."
+    },
+    {
+      "id": "vampire_squid",
+      "depth_m": 2500,
+      "scene": "vampire_squid",
+      "text": "Nama berikutnya terdengar seperti monster: vampire squid, Vampyroteuthis infernalis. Namun hewan ini tidak berburu darah, dan bukan cumi-cumi biasa. Ia hidup di perairan dalam yang miskin oksigen dengan metabolisme yang hemat. Alih-alih mengejar mangsa besar, ia menggunakan filamen panjang untuk mengumpulkan partikel organik kecil yang hanyut, bagian dari salju laut. Jika terancam, ia dapat membalikkan jubah lengannya ke luar dan menampilkan tonjolan seperti duri. Taktik ini lebih mirip pertahanan daripada serangan. Di lingkungan dengan sedikit makanan dan oksigen, menghemat energi adalah keunggulan besar. Nama seramnya memang menarik perhatian, tetapi kisah sebenarnya lebih mengejutkan: ia bertahan dengan bergerak pelan dan memungut makanan yang turun dari lapisan atas."
+    },
+    {
+      "id": "siphonophore",
+      "depth_m": 3300,
+      "scene": "siphonophore",
+      "text": "Di depan kapal selam melayang sebuah rantai panjang berkilau. Sekilas ia tampak seperti satu hewan raksasa, tetapi beberapa siphonophore adalah koloni dari banyak unit khusus bernama zooid. Unit-unit ini terhubung dan punya tugas berbeda: ada yang membantu bergerak, menangkap makanan, atau bereproduksi. Jadi, apakah ini satu hewan atau banyak? Jawabannya menantang cara kita biasa membagi makhluk hidup. Bentuknya yang panjang dan rapuh cocok untuk melayang di perairan terbuka. Di sekelilingnya, partikel kecil turun seperti salju. Salju laut terdiri dari sisa organisme dan bahan organik yang jatuh dari permukaan. Bagi sebagian penghuni laut dalam, hujan perlahan ini adalah jalur makanan dari dunia yang jauh di atas."
+    },
+    {
+      "id": "hadal",
+      "depth_m": 8000,
+      "scene": "snailfish",
+      "text": "Kita kini berada di wilayah palung. Peneliti pernah merekam ikan siput di kedalaman sekitar 8.336 meter di Palung Izu-Ogasawara. Itu bukan berarti semua ikan mampu hidup sedalam ini; batasnya berbeda antarspesies dan pengamatan baru bisa mengubah rekor. Ikan laut dalam tidak memakai zirah logam. Tubuh dan proses biologisnya beradaptasi dengan tekanan tinggi, suhu rendah, dan makanan yang tidak pasti. Lebih jauh lagi, bagian terdalam Palung Mariana mendekati sebelas ribu meter. Bahkan di sana peneliti menemukan bukti kehidupan, walau banyak hal tentang ekosistemnya masih belum diketahui. Perjalanan kita berakhir tanpa monster raksasa. Yang kita temukan adalah dunia luas yang penuh strategi, keterhubungan, dan misteri. Laut terdalam bukan ruang kosong. Ia bagian planet yang masih terus menunggu untuk dipahami."
+    }
+  ]
+}
