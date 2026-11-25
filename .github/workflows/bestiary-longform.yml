@@ -1,0 +1,64 @@
+name: BESTIARY Longform
+run-name: BESTIARY Longform · ${{ inputs.episode }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      episode:
+        description: Longform package
+        required: true
+        type: choice
+        options:
+          - LONG01
+      generate:
+        description: Generate Roger voice using included ElevenLabs credits and render MP4
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bestiary-longform
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install cloud render dependencies
+        if: inputs.generate
+        working-directory: elevenlabs
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          python -m pip install -r requirements.txt
+      - name: Check package
+        run: |
+          test -s elevenlabs/longform/${{ inputs.episode }}.json
+          test -s elevenlabs/longform/render.py
+          test -s elevenlabs/longform/produce.py
+          if [[ "${{ inputs.generate }}" != "true" ]]; then
+            echo "Package is present. Set generate=true to use included ElevenLabs credits and render."
+          fi
+      - name: Generate timestamped narration and render
+        if: inputs.generate
+        working-directory: elevenlabs
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
+        run: python longform/produce.py
+      - name: Attach verified MP4 and publishing package
+        if: inputs.generate
+        uses: actions/upload-artifact@v4
+        with:
+          name: BESTIARY-${{ inputs.episode }}-LONGFORM
+          path: elevenlabs/output/${{ inputs.episode }}/
+          if-no-files-found: error
+          retention-days: 7
