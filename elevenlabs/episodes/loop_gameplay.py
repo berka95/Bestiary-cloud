@@ -78,7 +78,7 @@ def ant(d,x,y,t,tilt,leg_energy=1):
 
 def antlion(t,starts):
     builds,climb,shoot,slide,catch=starts[2],starts[4],starts[6],starts[7],starts[8]+.45
-    im=landscape(t,False,10*ease(t,0,builds))
+    im=landscape(t,False,t*17+10*ease(t,0,builds))
     d=ImageDraw.Draw(im)
     mid=142
     pit_top=230
@@ -93,6 +93,7 @@ def antlion(t,starts):
         d.line(band,fill=(164-4*j,115-3*j,78-2*j),width=3)
     d.line(edge,fill=(241,178,110),width=2)
     for x,y,k in GRAIN:
+        x=round((x-t*22)%310)
         if x>=W:
             continue
         sy=round(sand(x)+3+y*.88)
@@ -210,7 +211,7 @@ def bird(d,x,y,t,facing,walk,dance,female=False):
 
 def forest(t,starts):
     build,collect,show=starts[2],starts[3],starts[6]
-    pan=17*ease(t,0,collect)-11*ease(t,show,starts[-1])
+    pan=t*18+17*ease(t,0,collect)-11*ease(t,show,starts[-1])
     im=landscape(t,True,pan)
     d=ImageDraw.Draw(im)
     shelf=298
