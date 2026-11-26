@@ -48,8 +48,10 @@ def frame(t,timing):
     for j in range(len(points)-1,0,-1):
         a=j/42; x,y=points[j]; width=max(3,int((15-12*a)*zoom))
         d.ellipse((x-width,y-width//2,x+width,y+width//2),fill='#182c26')
-        d.ellipse((x-width+2,y-width//2+2,x+width-2,y+width//2-1),fill='#a28a48')
-        d.line((x-width+3,y-width//3,x+width-3,y-width//3),fill='#d3b76c',width=2)
+        # Thin tail segments have no room for an inset ellipse.
+        if width >= 4:
+            d.ellipse((x-width+2,y-width//2+2,x+width-2,y+width//2-1),fill='#a28a48')
+            d.line((x-width+3,y-width//3,x+width-3,y-width//3),fill='#d3b76c',width=2)
     d.ellipse((hx-24*zoom,hy-13*zoom,hx+25*zoom,hy+13*zoom),fill='#b8a05a',outline='#352c21',width=2)
     d.ellipse((hx+8,hy-6,hx+13,hy-1),fill='#171c1e')
     d.point((int(hx+10),int(hy-5)),fill='white')
