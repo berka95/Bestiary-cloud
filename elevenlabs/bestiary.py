@@ -153,8 +153,12 @@ def main():
     runtime = spec["duration"]
     captions = spec["captions"]
     animal = spec["animal"]
-    if not re.fullmatch(r"[A-Z0-9_]+", animal) or not 20 <= runtime <= 30 or runtime*FPS % 1:
-        raise ValueError("Use an uppercase animal slug and a frame-aligned runtime of 20–30 seconds.")
+    v3 = spec.get("format") == "retention-v3"
+    low, high = (15, 18) if v3 else (20, 30)
+    if not re.fullmatch(r"[A-Z0-9_]+", animal) or not low <= runtime <= high or runtime*FPS % 1:
+        raise ValueError(f"Use an uppercase animal slug and a frame-aligned runtime of {low}–{high} seconds.")
+    if v3 and any(not 1 <= len(caption.split()) <= 5 for caption in captions):
+        raise ValueError("V3 captions must contain 1–5 words each.")
     if not captions or any(not line.strip() for line in captions):
         raise ValueError("Each subtitle must contain text.")
     texts = [" ".join(caption.split()) for caption in captions]
