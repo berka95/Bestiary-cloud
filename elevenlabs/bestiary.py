@@ -81,6 +81,45 @@ def speech(cache, payload, voice_id):
     return result
 
 
+def recover_speech(cache, payload, voice_id):
+    """Reuse a previous exact-script TTS response; never generate new audio."""
+    response_path = cache / "speech.json"
+    if response_path.exists():
+        return json.loads(response_path.read_text())
+    query = ("/history?page_size=100&source=TTS&voice_id=" + quote(voice_id, safe="")
+             + "&search=" + quote(payload["text"][:70], safe=""))
+    listing, _ = api(query)
+    matches = [item for item in listing.get("history", [])
+               if item.get("text") == payload["text"]
+               and item.get("voice_id") == voice_id
+               and item.get("model_id") == payload["model_id"]]
+    if not matches:
+        raise ValueError("No matching prior VO in ElevenLabs History. No new credits spent.")
+    item = max(matches, key=lambda x: x.get("date_unix", 0))
+    history_path = "/history/" + quote(item["history_item_id"], safe="")
+    detail, _ = api(history_path)
+    alignments = detail.get("alignments") or {}
+    alignment = (alignments.get("alignment") or alignments.get("character_alignment")
+                 or detail.get("alignment"))
+    if not alignment or "".join(alignment.get("characters", [])) != payload["text"]:
+        raise ValueError("Previous VO lacks exact original-text timestamps; no new audio generated.")
+    request = Request(API + history_path + "/audio", headers={
+        "xi-api-key": os.environ["ELEVENLABS_API_KEY"], "Accept": "audio/mpeg"})
+    try:
+        with urlopen(request, timeout=90) as response:
+            audio = response.read(8 * 1024 * 1024 + 1)
+    except (HTTPError, URLError, TimeoutError):
+        raise ValueError("Cannot download prior VO; check speech history read permission. No new generation.") from None
+    if not audio or len(audio) > 8 * 1024 * 1024:
+        raise ValueError("Invalid audio size from history; no new generation.")
+    result = {"audio_base64": base64.b64encode(audio).decode("ascii"),
+              "alignment": alignment, "reported_credits": 0, "estimated_credits": 0,
+              "reused_history": True}
+    save_json(response_path, result)
+    print("Reused existing ElevenLabs narration; no new TTS requested.", flush=True)
+    return result
+
+
 def aligned_cues(captions, alignment, tempo, duration):
     if not alignment:
         raise ValueError("ElevenLabs returned audio without original-text timing. Cached audio preserved.")
@@ -176,7 +215,8 @@ def main():
     digest = hashlib.sha256(json.dumps([voice_id, payload], sort_keys=True).encode()).hexdigest()
     cache = ROOT / ".work" / args.episode / digest
     cache.mkdir(parents=True, exist_ok=True)
-    result = speech(cache, payload, voice_id)
+    result = (recover_speech(cache, payload, voice_id) if spec.get("reuse_history")
+              else speech(cache, payload, voice_id))
     mp3, wav = cache/"voice.mp3", cache/"voice.wav"
     mp3.write_bytes(base64.b64decode(result["audio_base64"], validate=True))
     tempo = float(probe(mp3)["format"]["duration"]) / (runtime - .65)
@@ -200,7 +240,8 @@ def main():
     filename = f"BESTIARY_16BIT_{args.episode}_{animal}_FINAL_ID.mp4"
     candidate.replace(output/filename)
     reported = result["reported_credits"]
-    credits = (f"Kredit narasi dilaporkan ElevenLabs {reported}."
+    credits = ("VO dipulihkan dari history; tidak ada TTS baru." if result.get("reused_history") else
+               f"Kredit narasi dilaporkan ElevenLabs {reported}."
                if reported is not None else
                f"Kredit aktual tidak ditampilkan. Estimasi {result['estimated_credits']}.")
     (output/"PAKET_PUBLIKASI.txt").write_text(
