@@ -175,7 +175,10 @@ def verify(path, runtime):
     if ("black_start:" in result.stderr or "freeze_start:" in result.stderr
         or not peak or float(peak[1]) > -1 or not loudness
         or not -24 <= float(loudness[1]) <= -12):
-        raise ValueError("The candidate MP4 failed the black frame, freeze or audio check.")
+        diagnostics = [line for line in result.stderr.splitlines()
+                       if any(key in line for key in ("black_start:", "freeze_start:", "Peak:", " I: "))]
+        raise ValueError("The candidate MP4 failed the black frame, freeze or audio check. "
+                         + "\n".join(diagnostics[-15:]))
     return {"duration": runtime, "frames": int(video["nb_read_frames"]),
             "loudness_lufs": float(loudness[1]), "peak_dbfs": float(peak[1])}
 
@@ -184,6 +187,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("episode", help="Episode folder name, e.g. EP17")
     parser.add_argument("--check", action="store_true", help="Check account without generating")
+    parser.add_argument("--cache-key", action="store_true", help="Print the narration cache key")
     args = parser.parse_args()
     if not re.fullmatch(r"EP[0-9]+", args.episode):
         raise ValueError("Expected an episode ID like EP17.")
@@ -213,13 +217,23 @@ def main():
     payload = {"text": text, "model_id": MODEL, "language_code": "id",
                "voice_settings": VOICE_SETTINGS}
     digest = hashlib.sha256(json.dumps([voice_id, payload], sort_keys=True).encode()).hexdigest()
+    if args.cache_key:
+        print(digest)
+        return
     cache = ROOT / ".work" / args.episode / digest
     cache.mkdir(parents=True, exist_ok=True)
     result = (recover_speech(cache, payload, voice_id) if spec.get("reuse_history")
               else speech(cache, payload, voice_id))
     mp3, wav = cache/"voice.mp3", cache/"voice.wav"
     mp3.write_bytes(base64.b64decode(result["audio_base64"], validate=True))
-    tempo = float(probe(mp3)["format"]["duration"]) / (runtime - .65)
+    raw_duration = float(probe(mp3)["format"]["duration"])
+    tail = 1.05 if spec.get("loop") else .65
+    # Keep short reads natural. Resize the episode before slowing speech past 0.82x.
+    if raw_duration / (runtime - tail) < .82:
+        runtime = max(20, math.ceil((raw_duration / .88 + tail) * FPS) / FPS)
+    elif spec.get("loop") and raw_duration / (runtime - tail) > 1.18:
+        runtime = min(30, math.ceil((raw_duration / 1.12 + tail) * FPS) / FPS)
+    tempo = max(.80, raw_duration / (runtime - tail))
     if not .75 <= tempo <= 1.30:
         raise ValueError("Narration requires excessive retiming. Cached audio preserved.")
     run("ffmpeg","-v","error","-y","-i",str(mp3),"-af",f"atempo={tempo:.8f}",

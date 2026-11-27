@@ -13,7 +13,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: bestiary-elevenlabs
+  group: bestiary-elevenlabs-${{ inputs.episode }}
   cancel-in-progress: false
 jobs:
   render:
@@ -28,25 +28,56 @@ jobs:
         if: inputs.generate
         working-directory: elevenlabs
         run: |
-          sudo apt-get update -q
-          sudo apt-get install -y ffmpeg fonts-dejavu-core fonts-liberation
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null || \
+             ! test -r /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf || \
+             { ! test -r /usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf && \
+               ! test -r /usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf; }; then
+            # Use one official Ubuntu mirror instead of the runner's rotating EC2 list.
+            printf '%s\n' 'https://azure.archive.ubuntu.com/ubuntu' | sudo tee /etc/apt/apt-mirrors.txt >/dev/null
+            sudo timeout 100s apt-get update -q -o Acquire::http::Timeout=12 -o Acquire::Retries=1
+            sudo timeout 100s apt-get install -y --no-install-recommends -o Acquire::http::Timeout=12 -o Acquire::Retries=1 ffmpeg fonts-dejavu-core fonts-liberation
+          fi
           python -m pip install -r requirements.txt
+      - name: Determine narration cache key
+        id: cache-key
+        if: inputs.generate
+        working-directory: elevenlabs
+        env:
+          EPISODE: ${{ inputs.episode }}
+          ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
+        run: |
+          digest=$(python bestiary.py "$EPISODE" --cache-key)
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+      - name: Restore generated narration
+        id: narration
+        if: inputs.generate
+        uses: actions/cache/restore@v4
+        with:
+          path: elevenlabs/.work/${{ inputs.episode }}/*/speech.json
+          key: narration-v1-${{ inputs.episode }}-${{ steps.cache-key.outputs.digest }}
       - name: Run workflow
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           ELEVENLABS_VOICE_ID: ${{ vars.ELEVENLABS_VOICE_ID }}
           EPISODE: ${{ inputs.episode }}
           GENERATE: ${{ inputs.generate }}
+          NARRATION_CACHED: ${{ steps.narration.outputs.cache-hit }}
         working-directory: elevenlabs
         run: |
           if [[ "$GENERATE" != true ]]; then
             python bestiary.py "$EPISODE" --check
-          elif [[ "$GITHUB_RUN_ATTEMPT" != 1 ]]; then
+          elif [[ "$GITHUB_RUN_ATTEMPT" != 1 && "$NARRATION_CACHED" != true ]]; then
             echo 'Inspect ElevenLabs History before starting a new production dispatch.'
             exit 1
           else
             python bestiary.py "$EPISODE"
           fi
+      - name: Preserve generated narration for a render retry
+        if: always() && inputs.generate && steps.narration.outputs.cache-hit != 'true' && hashFiles(format('elevenlabs/.work/{0}/*/speech.json', inputs.episode)) != ''
+        uses: actions/cache/save@v4
+        with:
+          path: elevenlabs/.work/${{ inputs.episode }}/*/speech.json
+          key: ${{ steps.narration.outputs.cache-primary-key }}
       - name: Attach verified MP4 and publishing package
         if: inputs.generate
         uses: actions/upload-artifact@v4
